@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #00000f;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .calculator {
+      background: #e7e7ee;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      width: 320px;
+    }
+    #display {
+      width: 100%;
+      padding: 15px;
+      font-size: 28px;
+      text-align: right;
+      border: none;
+      margin-bottom: 20px;
+      background: #1a1a2e;
+      color: #f5f3f7;
+      border-radius: 10px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    button {
+      padding: 18px;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      background: #393963;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+    }
+    button:hover {
+      background: #51518c;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    /* Red color for C and ⌫ buttons */
+    button:nth-child(1),
+    button:nth-child(2) {
+      background-color: #e74c3c;
+    }
+    button:nth-child(3),
+    button:nth-child(4),
+    button:nth-child(8),
+    button:nth-child(12),
+    button:nth-child(16),
+    button:nth-child(19) {
+      background-color: #f39c12;
+    }
+    button:nth-child(19) {
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" disabled />
+    <div class="buttons">
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="deleteLast()">⌫</button>
+      <button onclick="appendValue('%')">%</button>
+      <button onclick="appendValue('/')">÷</button>
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button onclick="appendValue('*')">×</button>
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button onclick="appendValue('-')">−</button>
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button onclick="appendValue('+')">+</button>
+      <button onclick="appendValue('0')">0</button>
+      <button onclick="appendValue('.')">.</button>
+      <button onclick="calculateResult()">=</button>
+    </div>
+  </div>
+  <script>
+    const display = document.getElementById('display');
+    function appendValue(val) {
+      display.value += val;
+    }
+    function clearDisplay() {
+      display.value = '';
+    }
+    function deleteLast() {
+      display.value = display.value.slice(0, -1);
+    }
+    function calculateResult() {
+      try {
+        display.value = eval(display.value.replace('%', '/100'));
+      } catch {
+        display.value = 'Error';
+      }
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key.match(/[0-9+\-*/.%]/)) appendValue(e.key);
+      else if (e.key === 'Enter') calculateResult();
+      else if (e.key === 'Backspace') deleteLast();
+      else if (e.key === 'Escape') clearDisplay();
+    });
+  </script>
+</body>
+</html>
